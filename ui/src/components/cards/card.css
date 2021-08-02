@@ -1,0 +1,36 @@
+.card {
+    position: relative;
+    zoom: 0.4;
+    margin-right: -9em;
+    margin-left: -2em;
+    padding: 1em;
+}
+/* .filtered {
+    filter: blur(0.3em);
+}
+.filtered:hover {
+    filter: none;
+    zoom: 0.45;
+} */
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: #008CBA;
+}
+.flip {
+    transform: rotate(0.5turn);
+    color: #000;
+    /* transform: rotateZ(180deg); */
+    /* visibility: hidden;; */
+}
+.card-span {
+    border: 1px solid;
+    padding: 0;
+}

@@ -1,0 +1,33 @@
+.App {
+  text-align: center;
+  background-color: rgb(100, 32, 86);
+  /* margin: 0; */
+  padding: 1em;
+}
+.shuffle {
+  width: 4em;
+  margin: auto;
+  background-color: rgb(28, 114, 196);
+  color: #fff;
+  font-weight: bold;
+  padding: 0.4em;
+  border-radius: 0.5em;
+  align-self: center;
+}
+.shuffle:hover {
+  color: rgb(28, 114, 196);
+  background-color: #fff;
+  cursor: pointer;
+}
+.rules {
+  margin-bottom: 0.2em;
+  font-weight: bold;
+  color: #fff;
+}
+.rules span {
+  padding: 0 0.3em;
+}
+.timer {
+  font-weight: bold;
+  color: #fff;
+}

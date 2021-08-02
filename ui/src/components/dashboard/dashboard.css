@@ -1,0 +1,72 @@
+.dashboard {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+    align-items: center;
+    /* height: 70vh; */
+    /* width: 85vw; */
+    padding: 2em;
+    margin: 0 auto;
+    background-color: rgb(100, 32, 86);
+    /* background-color: lightslategray; */
+}
+.player {
+    flex: 2;
+    width: 80%;
+}
+.game-board {
+    position: relative;
+    width: 80%;
+    flex: 3 3 14em;
+    height: 30vh;
+    padding: 1em;
+    display: flex;
+    flex-flow: column;
+    align-items: space-between;
+    background-color: #fff;
+    border-radius: 0.4em;
+    box-shadow: 0.2em 0.3em 0.2em rgb(233, 236, 236);
+}
+.card-board {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    background-color: #fff;
+    border-radius: 0.4em;
+    box-shadow: 0.3em 0.3em 0.2em rgb(233, 236, 236);
+}
+.left-hand {
+    border-radius: 0.4em;
+    align-self: flex-end;
+    background-color: black;
+    width: 25em;
+    height: 100%;
+}
+.right-hand {
+    border-radius: 0.4em;
+    align-self: flex-end;
+    background-color: black;
+    width: 25em;
+    height: 100%;
+}
+.player-tag {
+    font-weight: bold;
+    color: #fff;
+    width: 6em;
+    margin: auto;
+    align-self: center;
+    margin: 0.5em auto;
+}
+.player-message {
+    font-weight: bold;
+    /* color: #fff; */
+    color: rgb(231, 28, 28);
+}
+.active {
+    background-color: rgb(231, 28, 28);
+    /* padding: 0.4em; */
+    border-radius: 0.5em;
+}
