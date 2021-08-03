@@ -25,7 +25,8 @@ module.exports = (sequelize, DataTypes) => {
     player: DataTypes.STRING,
     opponent: DataTypes.STRING,
     duration: DataTypes.STRING,
-    state: DataTypes.JSONB
+    state: DataTypes.JSONB,
+    completed: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'game',

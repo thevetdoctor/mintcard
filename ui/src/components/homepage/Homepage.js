@@ -16,7 +16,9 @@ export default function Homepage() {
     const [loading, setLoading] = useState(false);
     const [signupMode, setSignupMode] = useState(false);
     
-  const apiUrl = `/auth/get_username/${username}`;
+// const baseUrl = 'http://oba-game-app.herokuapp.com';
+const baseUrl = '';
+  const apiUrl = `${baseUrl}/auth/get_username/${username}`;
 
 const fetchData = async() => {
      try {
@@ -28,8 +30,8 @@ const fetchData = async() => {
                   headers: {'Content-Type': 'application/json'}
                   });
                   dispatch({
-                    type: 'SET_PUBLIC_DATA',
-                    publicData: res.data
+                    type: 'SET_USERNAME',
+                    data: res.data.user.username
                   });
                 if(res.data.success) {
                     register();
@@ -65,16 +67,16 @@ const fetchData = async() => {
             .then(async auth => {
                 const res = await axios({
                 method: 'POST',
-                url: '/auth/login',
+                url: `${baseUrl}/auth/login`,
                 data: {email, password},
                 headers: {'Content-Type': 'application/json'}
                 });
 
-                console.log('User logged in');
+                console.log('User logged in', res.data);
                 setLoading(false);
                 dispatch({
                     type: 'SET_USER',
-                    user: res.data
+                    user: res.data.data.user
                 });
                 dispatch({
                     type: 'SET_AUTHENTICATE',
@@ -83,10 +85,12 @@ const fetchData = async() => {
             })
             .catch((error) => {
                 console.log(error.message);
+                let message = error.message.indexOf('no user') > -1 ? 'Account not found, please select signup' : error.message;
+                message = error.message.indexOf('network') > -1 ? 'Please check network connection' : error.message;
                 setLoading(false);
                 dispatch({
                   type: 'SET_TAG',
-                  error: error.message.indexOf('no user') > -1 ? 'Account not found, please select signup' : error.message
+                  error: message
                 });             
               });
     }
@@ -98,7 +102,7 @@ const fetchData = async() => {
             .then(async (auth) => {
                 const res = await axios({
                     method: 'POST',
-                    url: '/auth',
+                    url: `${baseUrl}/auth`,
                     data: {email, password, username},
                     headers: {'Content-Type': 'application/json'}
                     });
@@ -107,7 +111,7 @@ const fetchData = async() => {
                 setLoading(false);
                 dispatch({
                     type: 'SET_USER',
-                    user: res.data
+                    user: res.data.data.user
                 });
                 dispatch({
                     type: 'SET_AUTHENTICATE',

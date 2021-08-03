@@ -19,6 +19,7 @@ const actions = {
     setWinner: { type: 'SET_WINNER'},
     setGameTie: { type: 'SET_GAME_TIE'},
     stopContinueStatus: { type: 'STOP_CONTINUE_STATUS'},
+    showRules: { type: 'SHOW_RULES'},
     setLogOut: { type: 'SET_LOGOUT'}
   }
   

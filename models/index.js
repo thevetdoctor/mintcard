@@ -39,10 +39,10 @@ Object.keys(db).forEach(modelName => {
 //   console.log("DB refreshed");
 //   // return sequelize.drop();
 // }); 
-
+ 
 sequelize.authenticate()
 .then(()=>{
-    console.log('Connection to database establised');
+    console.log('Connection to database establised'); 
 })
 .catch(err => {
     console.error(`Unable to connect to database:`);

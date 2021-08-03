@@ -26,7 +26,8 @@ export default function Dashboard() {
             gameTie,
             gameEnd,
             continueStatus,
-            username
+            username,
+            gameStart
         } = useSelector(state => state);
     // const deckApiUrl = 'https://deckofcardsapi.com/static/img/';
     const deckApiUrl = `${process.env.PUBLIC_URL}/img/`;
@@ -173,7 +174,7 @@ export default function Dashboard() {
                             });
                         }, 2000); 
                     }
-        } else if(playerDeck.length === 0 || opponentDeck.length === 0) {
+        } else if((playerDeck.length === 0 || opponentDeck.length === 0) && !gameStart) {
                 
                 const winner = playerDeck.length === 0 ? 'Player Two' : 'Player One';
             

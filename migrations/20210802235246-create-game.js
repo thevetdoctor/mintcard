@@ -29,6 +29,9 @@ module.exports = {
       state: {
         type: Sequelize.JSONB
       },
+      completed: {
+        type: Sequelize.BOOLEAN
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

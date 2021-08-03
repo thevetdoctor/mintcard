@@ -3,11 +3,15 @@ import actions from "./actions";
 export default function reducer(state= initialState, action) {
     switch(action.type) {
         case actions.setUser.type:
-            console.log('Adding user state');
+            console.log('Adding user state', action.user);
             localStorage.setItem('user', JSON.stringify(action.user));
+            localStorage.setItem('username', JSON.stringify(action.user.username));
+            localStorage.setItem('gamestart', true);
             return {
                 ...state,
-                user: action.user
+                user: action.user,
+                username: action.user.username,
+                gameStart: true
             };
             
         case actions.setUsername.type:
@@ -34,9 +38,9 @@ export default function reducer(state= initialState, action) {
         case actions.setAuthenticate.type:
             console.log('Setting authenticate');
             localStorage.setItem('authenticated', true);
-            localStorage.setItem('user', true);
+            // localStorage.setItem('user', true);
             return {
-                ...state, authenticated: action.data, user: true, password: 'hidden'
+                ...state, authenticated: action.data, password: 'hidden'
             };
         case actions.setTag.type:
             console.log('Tagging errors');
@@ -54,6 +58,7 @@ export default function reducer(state= initialState, action) {
             localStorage.setItem('playerturn', true);
             localStorage.setItem('opponentturn', false);           
             localStorage.setItem('gameend', false);           
+            localStorage.setItem('winner', JSON.stringify(''));
             return {
                 ...state, 
                 playerDeck, 
@@ -66,7 +71,8 @@ export default function reducer(state= initialState, action) {
                 opponentTurn: false,
                 showResult: false,
                 continueStatus: false,
-                gameEnd: false
+                gameEnd: false,
+                winner: ''
             };
         case actions.playerCardPlay.type:
             console.log('Player playing a card');
@@ -183,7 +189,8 @@ export default function reducer(state= initialState, action) {
             localStorage.setItem('gameend', true);       
             return {
                 ...state,
-                winner: action.winner
+                winner: action.winner,
+                gameEnd: true
             };
         case actions.stopContinueStatus.type:
             console.log('Stopping player continue status');
@@ -192,9 +199,15 @@ export default function reducer(state= initialState, action) {
                 gameTie: false,
                 continueStatus: false
             };
+        case actions.showRules.type:
+            console.log('Toggling show rules');
+            return {
+                ...state,
+                rulesActive: action.value
+            };
         case actions.setLogOut.type:
         console.log('Logout user');
-        localStorage.clear();
+        // localStorage.clear();
 
         localStorage.setItem('playerdeck', JSON.stringify([]));
         localStorage.setItem('opponentdeck', JSON.stringify([]));
@@ -209,7 +222,9 @@ export default function reducer(state= initialState, action) {
             playerDeck: [],
             opponentDeck: [],
             playerTurf: [],
-            opponentTurf: []
+            opponentTurf: [],
+            playerTag: 'Player One',
+            opponentTag: 'Player two'
         };
 
         default:
@@ -235,6 +250,8 @@ export const initialState = {
     tag: '',
     tc: false,    
     showResult: false,
+    rulesActive: false,
+    gameStart: false,
     user: JSON.parse(localStorage.getItem('user')) || null,
     winner: JSON.parse(localStorage.getItem('winner')) || '',
     gameEnd: JSON.parse(localStorage.getItem('gameend')) || false,

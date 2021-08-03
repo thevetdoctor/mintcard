@@ -1,10 +1,14 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import {useSelector} from 'react-redux';
 import data from './data';
 import { auth } from './firebase';
+import axios from 'axios';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Dashboard from './components/dashboard/Dashboard';
 import Homepage from './components/homepage/Homepage';
+import Rules from './components/rules/Rules';
 import './App.css';
 import store from './redux/store';
 import { ImShuffle } from 'react-icons/im';
@@ -15,12 +19,21 @@ import { IoBookSharp } from 'react-icons/io5';
 // let socket = io(`http://localhost:8001`);
 
 function App() {
-  const { getState, dispatch } = store;
+  const { getState, dispatch } = store; 
   const state = getState();
-  const {user} = useSelector(state => state);
-  const { authenticated } = useSelector(state => state);
+  const { 
+        user,
+        authenticated, 
+        rulesActive, 
+        winner, 
+        playerTag, 
+        opponentTag, 
+        gameEnd 
+      } = useSelector(state => state);
+  
 
-  const [showRules, setShowRules] = useState(false);
+  // const baseUrl = 'http://oba-game-app.herokuapp.com';
+  const baseUrl = '';
 
   const handleShuffle = () => {
     const allCards = data();
@@ -30,6 +43,42 @@ function App() {
         type: 'SHUFFLE_CARDS',
         deck: [playerDeck, opponentDeck]
     });
+  };
+  
+  const handleGameSave = async() => {
+    const data = {
+      uniqueid: user.id, 
+      type: 'single', 
+      winner: winner ? winner : 'none', 
+      player: playerTag, 
+      opponent: opponentTag, 
+      duration: '3600', 
+      state, 
+      completed: gameEnd ? true : false, 
+      userId: user.id,
+      update: true
+    };
+    console.log(data);
+    const res = await axios({
+      method: 'POST',
+      url: `${baseUrl}/games`,
+      data,
+      headers: {'Content-Type': 'application/json'}
+      });
+      console.log(res.data);
+      if(res.data.success) {
+        toast(res.data.message);
+      } else {
+        toast("Some error found!");
+      }
+  };
+  
+  const handleRules = () => {
+    dispatch({
+        type: 'SHOW_RULES',
+        value: !rulesActive
+    });
+    console.log(rulesActive);
   };
 
   const logout = async() => {
@@ -70,33 +119,21 @@ function App() {
 
   return (
     <div className="App">
-      {/* <h2>
-        Welcome to MintCard
-      </h2> */}
-      {/* <div className='rules'>
-        <span>Rules</span>|
-        <span>A stands for 1</span>|
-        <span>K stands for 11</span>|
-        <span>J stands for 12</span>|
-        <span>Q stands for 13</span>|
-      </div>
-      <div className='rules'>
-        |<span>Spade gives extra 1</span>|
-        <span>Diamond gives extra 2</span>|
-        <span>Heart gives extra 3</span>|
-        <span>Club gives extra 4</span>|
-      </div> */}
       <div className='tabs'>
+        <ToastContainer />
+        {authenticated ?
+        <Fragment>
+
         <p className='shuffle' onClick={handleShuffle}>
           Shuffle
           <ImShuffle />
         </p>
-        <p className='save'>
+        <p className='save' onClick={handleGameSave}>
           Save Game
           <FaTelegramPlane />
         </p>
-        {!showRules && (
-          <p className='rules'>
+        {!rulesActive && (
+          <p className='rules' onClick={handleRules}>
             Rules
             <IoBookSharp />
           </p>
@@ -105,9 +142,13 @@ function App() {
           Logout
           <FaTelegramPlane />
         </p>
+        </Fragment>
+        :
+        <Fragment></Fragment>}
       </div>
-      {authenticated && <Dashboard />}
-      {!authenticated && <Homepage />}
+      {(authenticated && !rulesActive) && <Dashboard />}
+      {(!authenticated && !rulesActive) && <Homepage />}
+      {rulesActive && <Rules />}
 
     </div>
   );
