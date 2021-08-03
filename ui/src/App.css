@@ -1,0 +1,61 @@
+.App {
+  text-align: center;
+  /* background-color: rgb(100, 32, 86); */
+  /* background-color: #1971c2; */
+  background-color: #e91e63;
+  background-color: rgb(100, 32, 86);
+  background-image: url('./images.jpg');
+  /* margin: 0; */
+  padding: 1em;
+}
+.tabs {
+  display: flex;
+}
+.shuffle, .save, .rules, .logout {
+  width: 7em;
+  margin: auto;
+  background-color: rgb(28, 114, 196);
+  color: #fff;
+  font-weight: bold;
+  padding: 0.4em;
+  border-radius: 0.5em;
+  align-self: center;
+}
+.shuffle:hover {
+  color: rgb(28, 114, 196);
+  background-color: #fff;
+  cursor: pointer;
+}
+.save {
+  width: 8em;
+  background-color: rgb(100, 32, 86);
+}
+.save:hover {
+  color: rgb(100, 32, 86);
+  background-color: #fff;
+  cursor: pointer;
+}
+.rules {
+  width: 8em;
+  background-color: #E91E63;
+}
+.rules:hover {
+  color: #e91e63;
+  background-color: #fff;
+  cursor: pointer;
+}
+.rules span {
+  padding: 0 0.3em;
+}
+.logout {
+  background-color: rgb(139, 126, 126);
+}
+.logout:hover {
+  color: rgb(139, 126, 126);
+  background-color: #fff;
+  cursor: pointer;
+}
+.timer {
+  font-weight: bold;
+  color: #fff;
+}
