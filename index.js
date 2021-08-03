@@ -7,7 +7,13 @@ const io = require('socket.io')(server, {
     }
 });
 const path = require('path');
-const port = process.env.PORT || 8001;
+const parser = require('body-parser');
+const db = require('./models/index');
+const routeHandler = require('./routes/index');
+const { config } = require('dotenv');
+config();
+
+const port = process.env.APP_PORT;
 
 io.on('connection', client => {
     client.emit('init', { data: 'Welcome to MintCard!'});
@@ -21,16 +27,19 @@ io.on('connection', client => {
 });
 
 
-app.use(express.static(path.resolve(__dirname, './ui/build')));
+app.use(express.static(path.join(__dirname, './ui/build')));
+app.use(parser.json());
+app.use(parser.urlencoded({
+    extended: true
+}));
+routeHandler(app);
 
-// Handle GET requests to /api route
 app.get("/api", (req, res) => {
     res.json({ message: "Hello from server!" });
 });
 
-// All other GET requests not handled before will return our React app
-app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, './ui/build', 'index.html'));
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, './ui/build', 'index.html'));
 });
 
 server.listen(port, () => console.log(`Server listening @ port: ${port}`));

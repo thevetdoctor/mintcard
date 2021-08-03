@@ -8,7 +8,42 @@ export default function reducer(state= initialState, action) {
             return {
                 ...state,
                 user: action.user
-            };          
+            };
+            
+        case actions.setUsername.type:
+            console.log('Adding username');
+            localStorage.setItem('username', JSON.stringify(action.data));
+            return {
+                ...state, username: action.data, tag: ''
+            };
+        case actions.setPassword.type:
+            console.log('Adding password');
+            return {
+                ...state, password: action.data
+            };
+        case actions.setEmail.type:
+            console.log('Adding email');
+            return {
+                ...state, email: action.data
+            };
+        case actions.setTC.type:
+            console.log('Updating T&C');
+            return {
+                ...state, tc: action.data
+            };
+        case actions.setAuthenticate.type:
+            console.log('Setting authenticate');
+            localStorage.setItem('authenticated', true);
+            localStorage.setItem('user', true);
+            return {
+                ...state, authenticated: action.data, user: true, password: 'hidden'
+            };
+        case actions.setTag.type:
+            console.log('Tagging errors');
+            return {
+                ...state, tag: action.error
+            };
+
         case actions.shuffleCards.type:
             console.log('Shuffle cards');
             const [playerDeck, opponentDeck] = action.deck;
@@ -17,7 +52,8 @@ export default function reducer(state= initialState, action) {
             localStorage.setItem('playerturf', JSON.stringify([]));
             localStorage.setItem('opponentturf', JSON.stringify([]));
             localStorage.setItem('playerturn', true);
-            localStorage.setItem('opponentturn', false);            
+            localStorage.setItem('opponentturn', false);           
+            localStorage.setItem('gameend', false);           
             return {
                 ...state, 
                 playerDeck, 
@@ -29,7 +65,8 @@ export default function reducer(state= initialState, action) {
                 playerTurn: true,
                 opponentTurn: false,
                 showResult: false,
-                continueStatus: false
+                continueStatus: false,
+                gameEnd: false
             };
         case actions.playerCardPlay.type:
             console.log('Player playing a card');
@@ -140,6 +177,14 @@ export default function reducer(state= initialState, action) {
                 gameTie: true,
                 continueStatus: true
             };
+        case actions.setWinner.type:
+            console.log('Set overall Winner');
+            localStorage.setItem('winner', JSON.stringify(action.winner));       
+            localStorage.setItem('gameend', true);       
+            return {
+                ...state,
+                winner: action.winner
+            };
         case actions.stopContinueStatus.type:
             console.log('Stopping player continue status');
             return {
@@ -148,14 +193,23 @@ export default function reducer(state= initialState, action) {
                 continueStatus: false
             };
         case actions.setLogOut.type:
-        console.log('Logout');
+        console.log('Logout user');
         localStorage.clear();
+
+        localStorage.setItem('playerdeck', JSON.stringify([]));
+        localStorage.setItem('opponentdeck', JSON.stringify([]));
+        localStorage.setItem('playerturf', JSON.stringify([]));
+        localStorage.setItem('opponentturf', JSON.stringify([]));
+        localStorage.setItem('playerturn', false);
+        localStorage.setItem('opponentturn', false);           
+        localStorage.setItem('gameend', false); 
         return {
             user: null,
-            publicData: {},
-            repoData: [],
-            todos: [],
-            authenticated: false
+            authenticated: false,
+            playerDeck: [],
+            opponentDeck: [],
+            playerTurf: [],
+            opponentTurf: []
         };
 
         default:
@@ -178,8 +232,12 @@ export const initialState = {
     continueStatus: false,
     email: '',
     password: '',
+    tag: '',
+    tc: false,    
     showResult: false,
     user: JSON.parse(localStorage.getItem('user')) || null,
+    winner: JSON.parse(localStorage.getItem('winner')) || '',
+    gameEnd: JSON.parse(localStorage.getItem('gameend')) || false,
     username: JSON.parse(localStorage.getItem('username')) || '',
     authenticated: JSON.parse(localStorage.getItem('authenticated')) || false
 };

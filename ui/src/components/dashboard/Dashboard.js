@@ -24,7 +24,9 @@ export default function Dashboard() {
             opponentTurn,
             showResult,
             gameTie,
-            continueStatus
+            gameEnd,
+            continueStatus,
+            username
         } = useSelector(state => state);
     // const deckApiUrl = 'https://deckofcardsapi.com/static/img/';
     const deckApiUrl = `${process.env.PUBLIC_URL}/img/`;
@@ -135,7 +137,7 @@ export default function Dashboard() {
                         type: 'UPDATE_WINNER',
                         winner
                     });
-                }, 3000);
+                }, 5000);
             } else {
                 setTimeout(() => {
                     dispatch({
@@ -160,7 +162,7 @@ export default function Dashboard() {
                                 type: 'UPDATE_WINNER',
                                 winner
                             });
-                        }, 3000);
+                        }, 5000);
                     } else {
                         setTimeout(() => {
                             dispatch({
@@ -171,6 +173,21 @@ export default function Dashboard() {
                             });
                         }, 2000); 
                     }
+        } else if(playerDeck.length === 0 || opponentDeck.length === 0) {
+                
+                const winner = playerDeck.length === 0 ? 'Player Two' : 'Player One';
+            
+            setTimeout(() => {
+                dispatch({
+                    type: 'SHOW_RESULT'
+                });
+            }, 2000);
+            setTimeout(() => {
+                dispatch({
+                    type: 'SET_WINNER',
+                    winner
+                });
+            }, 5000);
         }
         return () => {
             console.log('Clean-up dashboard');
@@ -195,7 +212,7 @@ export default function Dashboard() {
                         onClick={(e, item) => handleClick(e, item)}
                     />
                 ))}
-                <p className={`player-tag ${playerTurn && 'active'}`}>{playerTag}</p>
+                <p className={`player-tag ${playerTurn && 'active'}`}>{!username ? playerTag : username}</p>
             </div>
             <div className='game-board'>
                 <div className='player-message'>{playerMessage}</div>
@@ -206,12 +223,11 @@ export default function Dashboard() {
                             key={idx}
                             tag={`${item.tag}/player/${item.value}`}
                             flipState={item.flipState}
-                            src={`${deckApiUrl}${item.tag}.png`}
-                            // onClick={(e) => handleClick(e)}
+                            src={showResult ? `${deckApiUrl}${item.tag}.png` :`${deckApiUrl}XX.png`}
                             />
                             ))}
                     </div>
-                    <div>
+                    <div className='result-board'>
                         {showResult ? 
                         <Fragment>
                             <br/>
@@ -223,7 +239,15 @@ export default function Dashboard() {
                             -------------- <br/>
                             {!gameTie ?
                             <>
-                            {totalValue(playerTurf) > totalValue(opponentTurf) ? 'Player One takes all' : 'Player Two takes all'}
+                            {!gameEnd ?
+                                <>
+                                {totalValue(playerTurf) > totalValue(opponentTurf) ? 'Player One takes all' : 'Player Two takes all'}
+                                </>
+                                :
+                                <>
+                                {totalValue(playerTurf) > totalValue(opponentTurf) ? 'Player One WINS' : 'Player Two WINS'}
+                                </>
+                            }
                             </>
                             :
                             <span>
@@ -244,8 +268,7 @@ export default function Dashboard() {
                             key={idx}
                             tag={`${item.tag}/opponent/${item.value}`}
                             flipState={item.flipState}
-                            src={`${deckApiUrl}${item.tag}.png`}
-                            // onClick={(e) => handleClick(e)}
+                            src={showResult ? `${deckApiUrl}${item.tag}.png` :`${deckApiUrl}XX.png`}
                             />
                             ))}
                     </div>
@@ -259,7 +282,7 @@ export default function Dashboard() {
                         key={idx}
                         tag={`${item.tag}/opponent/${item.value}`}
                         flipState={item.flipState}
-                        src={`${deckApiUrl}${item.tag}.png`}
+                        src={`${deckApiUrl}XX.png`}
                         onClick={(e) => handleClick(e)}
                     />
                 ))}

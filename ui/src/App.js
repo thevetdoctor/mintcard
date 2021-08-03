@@ -1,10 +1,15 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {useSelector} from 'react-redux';
 import data from './data';
+import { auth } from './firebase';
 import Dashboard from './components/dashboard/Dashboard';
+import Homepage from './components/homepage/Homepage';
 import './App.css';
 import store from './redux/store';
+import { ImShuffle } from 'react-icons/im';
+import { FaTelegramPlane } from 'react-icons/fa';
+import { IoBookSharp } from 'react-icons/io5';
 // import io from 'socket.io-client'
 
 // let socket = io(`http://localhost:8001`);
@@ -13,12 +18,9 @@ function App() {
   const { getState, dispatch } = store;
   const state = getState();
   const {user} = useSelector(state => state);
-  
-  // let timer = Date.now().toLocaleString();
-  // setInterval(() => {
-  //   timer += 1;
-  //   console.log('timer');
-  // }, 1000);
+  const { authenticated } = useSelector(state => state);
+
+  const [showRules, setShowRules] = useState(false);
 
   const handleShuffle = () => {
     const allCards = data();
@@ -29,6 +31,20 @@ function App() {
         deck: [playerDeck, opponentDeck]
     });
   };
+
+  const logout = async() => {
+    await auth
+            .signOut()
+            .then(() => {
+                console.log("User logged out");
+                dispatch({
+                    type: 'SET_LOGOUT',
+                });
+            })
+            .catch((error) => {
+                console.log(error.message);
+            }); 
+    };
 
   useEffect(() => {
     // socket.on('init', message => {
@@ -43,9 +59,9 @@ function App() {
     //   console.log('state received: ', state);
     // });
 
-    fetch("/api")
-    .then((res) => res.json())
-    .then((data) => console.log(data.message));
+    // fetch("/api")
+    // .then((res) => res.json())
+    // .then((data) => console.log(data.message));
 
     return () => {
       console.log('Clean-up App.js');
@@ -70,14 +86,29 @@ function App() {
         <span>Heart gives extra 3</span>|
         <span>Club gives extra 4</span>|
       </div> */}
-      <p 
-        className='shuffle'
-        onClick={handleShuffle}
-      >
-        Shuffle
-      </p>
-      {/* <span className='timer'>{timer}</span> */}
-        <Dashboard />
+      <div className='tabs'>
+        <p className='shuffle' onClick={handleShuffle}>
+          Shuffle
+          <ImShuffle />
+        </p>
+        <p className='save'>
+          Save Game
+          <FaTelegramPlane />
+        </p>
+        {!showRules && (
+          <p className='rules'>
+            Rules
+            <IoBookSharp />
+          </p>
+        )}
+        <p className='logout' onClick={() => logout()}>
+          Logout
+          <FaTelegramPlane />
+        </p>
+      </div>
+      {authenticated && <Dashboard />}
+      {!authenticated && <Homepage />}
+
     </div>
   );
 }
