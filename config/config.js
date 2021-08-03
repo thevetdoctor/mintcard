@@ -4,7 +4,7 @@ const {
     PASSWORD, 
     DB_NAME, 
     HOSTNAME,
-    PORT,
+    DB_PORT,
     DIALECT,
     SEEDER_STORAGE 
 } = process.env;
@@ -15,7 +15,7 @@ module.exports = {
       password: PASSWORD,
       database: DB_NAME,
       host: HOSTNAME,
-      port: PORT,
+      port: DB_PORT,
       dialect: 'postgres',
       seederStorage: SEEDER_STORAGE,
     },
@@ -24,7 +24,7 @@ module.exports = {
         password: PASSWORD,
         database: DB_NAME,
         host: HOSTNAME,
-        port: PORT,
+        port: DB_PORT,
         dialect: DIALECT,
         seederStorage: SEEDER_STORAGE,
     },
@@ -33,7 +33,7 @@ module.exports = {
         password: PASSWORD,
         database: DB_NAME,
         host: HOSTNAME,
-        port: PORT,
+        port: DB_PORT,
         dialect: DIALECT,
         seederStorage: SEEDER_STORAGE,
     }

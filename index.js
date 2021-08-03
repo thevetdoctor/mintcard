@@ -13,7 +13,7 @@ const routeHandler = require('./routes/index');
 const { config } = require('dotenv');
 config();
 
-const port = process.env.APP_PORT;
+const port = process.env.PORT;
 
 io.on('connection', client => {
     client.emit('init', { data: 'Welcome to MintCard!'});
