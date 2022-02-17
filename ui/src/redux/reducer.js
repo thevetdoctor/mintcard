@@ -1,3 +1,4 @@
+import { randomId } from "../utils";
 import actions from "./actions";
 
 export default function reducer(state= initialState, action) {
@@ -50,7 +51,13 @@ export default function reducer(state= initialState, action) {
 
         case actions.shuffleCards.type:
             console.log('Shuffle cards');
-            const [playerDeck, opponentDeck] = action.deck;
+            //one line solution
+            const shuffle = (array) => array.sort(() => Math.random() - 0.5);
+            let [playerDeck, opponentDeck] = action.deck;
+            playerDeck = shuffle(playerDeck);
+            opponentDeck = shuffle(opponentDeck);
+            const gameId = randomId('numeric', 5);
+
             localStorage.setItem('playerdeck', JSON.stringify(playerDeck));
             localStorage.setItem('opponentdeck', JSON.stringify(opponentDeck));
             localStorage.setItem('playerturf', JSON.stringify([]));
@@ -59,6 +66,7 @@ export default function reducer(state= initialState, action) {
             localStorage.setItem('opponentturn', false);           
             localStorage.setItem('gameend', false);           
             localStorage.setItem('winner', JSON.stringify(''));
+            localStorage.setItem('gameid', JSON.stringify(gameId));
             return {
                 ...state, 
                 playerDeck, 
@@ -72,7 +80,8 @@ export default function reducer(state= initialState, action) {
                 showResult: false,
                 continueStatus: false,
                 gameEnd: false,
-                winner: ''
+                winner: '',
+                gameId
             };
         case actions.playerCardPlay.type:
             console.log('Player playing a card');
@@ -252,6 +261,7 @@ export const initialState = {
     showResult: false,
     rulesActive: false,
     gameStart: false,
+    gameId: JSON.parse(localStorage.getItem('gameid')) || '',
     user: JSON.parse(localStorage.getItem('user')) || null,
     winner: JSON.parse(localStorage.getItem('winner')) || '',
     gameEnd: JSON.parse(localStorage.getItem('gameend')) || false,

@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const Users = require('../models').user;
 const Games = require('../models').game;
-const response = require('../helpers/response'); 
+const { response } = require('oba-http-response');
 
 exports.saveGames = async(req, res) => {
     const { uniqueid, type, winner, player, opponent, duration, state, completed, update, userId } = req.body;

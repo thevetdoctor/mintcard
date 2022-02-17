@@ -4,6 +4,7 @@ import {useSelector} from 'react-redux';
 import data from './data';
 import { auth } from './firebase';
 import axios from 'axios';
+import Loader from 'react-loader-spinner';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Dashboard from './components/dashboard/Dashboard';
@@ -14,9 +15,10 @@ import store from './redux/store';
 import { ImShuffle } from 'react-icons/im';
 import { FaTelegramPlane } from 'react-icons/fa';
 import { IoBookSharp } from 'react-icons/io5';
-// import io from 'socket.io-client'
+import io from 'socket.io-client';
 
 // let socket = io(`http://localhost:8001`);
+let socket = io();
 
 function App() {
   const { getState, dispatch } = store; 
@@ -25,17 +27,21 @@ function App() {
         user,
         authenticated, 
         rulesActive, 
-        winner, 
+        winner,
+        playerDeck,
+        opponentDeck,
         playerTag, 
         opponentTag, 
-        gameEnd 
-      } = useSelector(state => state);
-  
-
+        gameEnd,
+        gameId
+      } = useSelector(state => state);      
+      
+  const [loading, setLoading] = useState(false);
   // const baseUrl = 'http://oba-game-app.herokuapp.com';
   const baseUrl = '';
 
-  const handleShuffle = () => {
+  const handleShuffle = async() => {
+    await window.location.reload(true);
     const allCards = data();
     console.log(allCards);
     const [playerDeck, opponentDeck] = allCards;
@@ -46,6 +52,8 @@ function App() {
   };
   
   const handleGameSave = async() => {
+    setLoading(true);
+
     const data = {
       uniqueid: user.id, 
       type: 'single', 
@@ -71,7 +79,8 @@ function App() {
       } else {
         toast("Some error found!");
       }
-  };
+      setLoading(false);
+    };
   
   const handleRules = () => {
     dispatch({
@@ -95,18 +104,20 @@ function App() {
             }); 
     };
 
+
+    
   useEffect(() => {
-    // socket.on('init', message => {
-    //   console.log(message);
-    //   socket.emit('message', {response: 'Connection confirmed'});
-    // });
-    // socket.on('message', message => {
-    //   console.log(message);
-    // });
-    // socket.emit('gameState', state);
-    // socket.on('state', state => {
-    //   console.log('state received: ', state);
-    // });
+    socket.on('init', message => {
+      console.log(message, gameId);
+      socket.emit('message', {response: `User with ID: ${gameId}`});
+    });
+    socket.on('message', message => {
+      console.log(`Message received: ${message}`);
+    });
+    socket.emit('gameState', [playerDeck.length, opponentDeck.length]);
+    socket.on('state', stateFromServer => {
+      console.log('State received: ', stateFromServer);
+    });
 
     // fetch("/api")
     // .then((res) => res.json())
@@ -125,21 +136,31 @@ function App() {
         <Fragment>
 
         <p className='shuffle' onClick={handleShuffle}>
-          Shuffle
+          <span className='tab-title'>Restart/Shuffle</span>
           <ImShuffle />
         </p>
+
+        {!loading ?
         <p className='save' onClick={handleGameSave}>
-          Save Game
+          <span className='tab-title'>Save Game</span>
           <FaTelegramPlane />
         </p>
+          :
+          <Loader 
+              type='ThreeDots'
+              color='#00bfff'
+              height={80} 
+              width={80} 
+          />}           
+
         {!rulesActive && (
           <p className='rules' onClick={handleRules}>
-            Rules
+            <span className='tab-title'>Rules</span>
             <IoBookSharp />
           </p>
         )}
         <p className='logout' onClick={() => logout()}>
-          Logout
+          <span className='tab-title'>Logout</span>
           <FaTelegramPlane />
         </p>
         </Fragment>

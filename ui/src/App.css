@@ -12,7 +12,7 @@
   display: flex;
 }
 .shuffle, .save, .rules, .logout {
-  width: 7em;
+  width: 9em;
   margin: auto;
   background-color: rgb(28, 114, 196);
   color: #fff;
@@ -58,4 +58,14 @@
 .timer {
   font-weight: bold;
   color: #fff;
+}
+.tab-title {
+  margin-right: 0.3em;
+  line-height: 0.5;
+}
+@media screen and (max-width:500px) {
+  .tab-title {
+   display: none;
+  }
+  
 }

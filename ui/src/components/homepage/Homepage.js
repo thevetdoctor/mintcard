@@ -144,14 +144,7 @@ const fetchData = async() => {
                         MintCard App
                     </h1>
                     <p className='slide-home'>
-                        {signupMode ? 'SIGNUP' : ''}
-                        <span 
-                            className='mode' 
-                            onClick={() => setSignupMode(!signupMode)}
-                            >
-                            {signupMode ? 'click to login ?' : 'click to signup ?'}
-                        </span>
-                        {signupMode ? '' : 'LOGIN'}
+                        {signupMode ? 'SIGNUP' : 'LOGIN'}
                     </p>
                     <Input 
                         label='Email'
@@ -172,30 +165,39 @@ const fetchData = async() => {
                     />
                     {signupMode &&
                     <Input 
-                        label='Username - github'
+                        label='Username'
                         type='text'
                         value={username}
                         // tag={tag}
                         name='username'
-                        placeholder='Enter your github username'
+                        placeholder='Enter your username'
                     />}
                     <span className='tag'>{tag}</span>
                     {signupMode &&
                     <div className={`tc ${!tc && 'tc-red'}`}>
-                    <Input 
-                        type='checkbox'
-                        value={tc}
-                        name='tc'
-                        // placeholder='Enter your github username'
-                    /><span>Accept Terms & Conditions</span>
+                        <Input 
+                            type='checkbox'
+                            value={tc}
+                            name='tc'
+                            // placeholder='Enter your github username'
+                        />
+                        <span>Accept Terms & Conditions</span>
                     </div>}
                     {!loading ?
+                    <>
                     <Button
                         name={signupMode ? 'SIGNUP' : 'LOGIN'}
                         classname='btn'
                         onClick={handleSubmit}
                         disabled={btnDisabled}
                     />
+                    <span 
+                       className='mode' 
+                       onClick={() => setSignupMode(!signupMode)}
+                       >
+                       {signupMode ? 'click to login ?' : 'click to signup ?'}
+                    </span>
+                    </>
                     :
                     <Loader 
                         type='ThreeDots'

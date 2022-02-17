@@ -239,7 +239,7 @@ export default function Dashboard() {
                             Player Two<br/>
                             -------------- <br/>
                             {!gameTie ?
-                            <>
+                            <span className='blink'>
                             {!gameEnd ?
                                 <>
                                 {totalValue(playerTurf) > totalValue(opponentTurf) ? 'Player One takes all' : 'Player Two takes all'}
@@ -249,9 +249,9 @@ export default function Dashboard() {
                                 {totalValue(playerTurf) > totalValue(opponentTurf) ? 'Player One WINS' : 'Player Two WINS'}
                                 </>
                             }
-                            </>
+                            </span>
                             :
-                            <span>
+                            <span className='blink'>
                                 {continueStatus && <>GAME TIE, PICK TWO CARDS EACH!!!</>}
                             </span>
                             }

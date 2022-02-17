@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 const Users = require('../models').user;
-const response = require('../helpers/response'); 
+const { response } = require('oba-http-response');
 
 exports.signUp = async(req, res) => {
     const { email, password, username } = req.body;

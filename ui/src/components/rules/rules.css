@@ -2,7 +2,8 @@
     /* width: 75vw; */
     font-size: 0.9em;
     border-radius: 0.5em;
-    background-color: rgb(136, 133, 133);
+    /* background-color: rgb(136, 133, 133); */
+    background-image: linear-gradient(to bottom, rgba(127, 180, 230, 0.5), rgba(142, 180, 174, 0.5)), url('../../bg.jpg');
     font-family: 'Open Sans', sans-serif;    
     /* box-shadow: 0.3em 0.3em 0.2em rgb(210, 214, 214); */
     margin-bottom: 1em;
@@ -30,9 +31,9 @@
     border-radius: 0.5em;
     padding: 0.5em;
     /* text-align: justify; */
-    background-color: rgb(5, 5, 5);
+    background-color: rgb(39, 32, 32);
     color: rgb(223, 207, 207);
-    box-shadow: 0.2em 0.3em 0.2em rgb(233, 236, 236);
+    box-shadow: 0.2em 0.3em 0.2em rgb(11, 12, 12);
 }
 
 .title-home {
@@ -56,7 +57,7 @@
 .close-btn:hover {
     cursor: pointer;
     color: rgb(75, 67, 67);
-    background-color: #000;
+    /* background-color: #000; */
 }
 .extra-rules {
     margin-top: 0.3em;

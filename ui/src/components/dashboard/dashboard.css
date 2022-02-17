@@ -45,7 +45,7 @@
 }
 .left-hand {
     border-radius: 0.4em;
-    align-self: flex-end;
+    /* align-self: flex-end; */
     background-color: #172b4d;
     width: 25em;
     height: 100%;
@@ -74,4 +74,52 @@
     background-color: rgb(231, 28, 28);
     /* padding: 0.4em; */
     border-radius: 0.5em;
+}
+.blink {
+    animation: blink-animation 1s steps(5, start) infinite;
+    -webkit-animation: blink-animation 1s steps(5, start) infinite;
+  }
+  @keyframes blink-animation {
+    to {
+      visibility: hidden;
+    }
+}
+
+@media screen and (max-width:500px) {
+  .tab-title {
+   display: none;
+  }
+
+  .dashboard {
+    display: flex;
+    flex-flow: column;
+    padding: 1em;
+    margin: 0 auto;
+    background-image: url('../../images.jpg');
+}
+
+.player {
+    flex: 2;
+    width: 85%;
+    margin-left: -2.4em;
+}
+  .game-board {
+    position: relative;
+    padding: -1em;
+    display: flex;
+    border-radius: 0.4em;
+  }
+  .card-board {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    border-radius: 0.4em;
+    box-shadow: 0.3em 0.3em 0.2em rgb(233, 236, 236);
+  }
+  .left-hand, .right-hand {
+      width: 100%;
+  }
 }
